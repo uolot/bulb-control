@@ -30,6 +30,22 @@ def get_state(bulb):
     return power, brightness
 
 
+def publish_current_state(bulb, client):
+    log.info("... reading new state")
+
+    try:
+        power, brightness = get_state(bulb)
+    except Exception:
+        log.error("... failed to read bulb state", exc_info=True)
+    else:
+        log.info(
+            "... publishing new state, power: %s, brightness: %s", power, brightness
+        )
+        client.publish(config.POWER_VALUE_TOPIC, payload=power)
+        client.publish(config.BRIGHTNESS_VALUE_TOPIC, payload=brightness)
+        log.info("... published")
+
+
 def set_power(bulb, power):
     if power:
         bulb.turn_on()

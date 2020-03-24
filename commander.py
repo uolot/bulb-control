@@ -9,14 +9,6 @@ BULB = bulb.discover()
 MQTT = mqtt.get_client()
 
 
-def publish_current_state(client):
-    log.info("... reading new state")
-    power, brightness = bulb.get_state(BULB)
-    log.info("... publishing new state, power: %s, brightness: %s", power, brightness)
-    client.publish(config.POWER_VALUE_TOPIC, payload=power)
-    client.publish(config.BRIGHTNESS_VALUE_TOPIC, payload=brightness)
-
-
 def on_message(client, obj, message):
     log.info(f"Received message on topic {message.topic}: {message.payload}")
 
@@ -27,7 +19,7 @@ def on_message(client, obj, message):
         log.info("... turning bulb %s", "on" if power == 1 else "off")
         power = bulb.set_power(BULB, power)
 
-        publish_current_state(client)
+        bulb.publish_current_state(bulb, client)
         log.info("... ok")
 
     elif message.topic == config.BRIGHTNESS_COMMAND_TOPIC:
@@ -37,7 +29,7 @@ def on_message(client, obj, message):
         log.info("... setting new brightness")
         brightness = bulb.set_brightness(BULB, brightness)
 
-        publish_current_state(client)
+        bulb.publish_current_state(bulb, client)
         log.info("... ok")
 
 
