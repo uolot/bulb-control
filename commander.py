@@ -39,4 +39,5 @@ MQTT.subscribe(config.POWER_COMMAND_TOPIC)
 MQTT.subscribe(config.BRIGHTNESS_COMMAND_TOPIC)
 
 log.info("Starting client loop")
+# TODO: use loop_start() instead and move the poller code here
 MQTT.loop_forever()

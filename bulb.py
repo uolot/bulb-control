@@ -41,8 +41,8 @@ def publish_current_state(bulb, client):
         log.info(
             "... publishing new state, power: %s, brightness: %s", power, brightness
         )
-        client.publish(config.POWER_VALUE_TOPIC, payload=power)
-        client.publish(config.BRIGHTNESS_VALUE_TOPIC, payload=brightness)
+        client.publish(config.POWER_VALUE_TOPIC, payload=power, retain=True)
+        client.publish(config.BRIGHTNESS_VALUE_TOPIC, payload=brightness, retain=True)
         log.info("... published")
 
 
