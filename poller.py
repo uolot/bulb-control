@@ -16,7 +16,7 @@ log.info("Starting the polling loop")
 
 while True:
     log.info("Updating bulb state")
-    bulb.publish_current_state(bulb, MQTT)
+    bulb.publish_current_state(BULB, MQTT)
 
     log.debug("---- Sleeping for %ds %s", POLL_SLEEP, "-" * 30)
     time.sleep(POLL_SLEEP)
